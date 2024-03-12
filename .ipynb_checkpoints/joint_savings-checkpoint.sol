@@ -33,6 +33,9 @@ contract JointSavings {
     uint public lastWithdrawAmount; 
     uint public contractBalance;
     
+     // Payable constructor
+    constructor() payable {
+    }
     /*
     Define a function named **withdraw** that will accept two arguments.
     - A `uint` variable named `amount`
@@ -53,7 +56,9 @@ contract JointSavings {
         /*
         Add and `if` statement to check if the `lastToWithdraw` is not equal to (`!=`) to `recipient` If `lastToWithdraw` is not equal, then set it to the current value of `recipient`.
         */
-        require(contractBalance>=amount, "Insufficient funds!");
+        if (lastToWithdraw != recipient) {
+        lastToWithdraw = recipient;
+        }
 
         // Call the `transfer` function of the `recipient` and pass it the `amount` to transfer as an argument.
         recipient.transfer(amount);
@@ -87,4 +92,5 @@ contract JointSavings {
     /*
     Finally, add the **default fallback function** so that your contract can store Ether sent from outside the deposit function.
     */
-      fallback() external payable {}
+    receive() external payable{}
+    }
